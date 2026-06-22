@@ -1,16 +1,16 @@
-# TCGA Multi-Cancer Type Classifier
+# Cancer Type Classifier
 
-An end-to-end machine learning pipeline that classifies **5 cancer types** from somatic mutation profiles, using open-access genomic data from The Cancer Genome Atlas (TCGA).
+An end-to-end machine learning pipeline that classifies **5 cancer types** from MAF files (somatic mutation profiles), using open-source genomic data from TCGA.
 
-Built on AWS (S3, Glue, Athena, SageMaker) with XGBoost and SHAP-based interpretability.
+Built using AWS tools (S3, Glue, Athena), trained with XGBoost and SHAP-based interpretability.
 
 ---
 
-## The problem
+## Defining the problem
 
-Different cancers leave different "fingerprints" in a patient's DNA — specific genes that are mutated more often in one cancer type than another. This project asks: **given a patient's somatic mutation profile alone, can a model correctly identify which cancer they have?**
+Each type of cancer causes a different impression in a patient's DNA. Some genes mutate more often in one cancer type than another. This project tries to answer the quesion: **given a patient's mutation profile, can a model accurately point out which cancer type they have?**
 
-This matters because mutation-based classification can support cancer of unknown primary (CUP) diagnosis, where the tumour site is ambiguous.
+This is a mutation-based classification problem and it can support cancer of unknown primary (CUP) diagnoses (where the tumour site is ambiguous).
 
 ---
 
@@ -76,17 +76,17 @@ GDC API (TCGA open-access MAFs)
 
 | Cancer type | F1 |
 |-------------|-----|
-| KIRC (kidney) | 0.86 ✅ strongest |
-| BRCA (breast) | ~0.75 |
-| COAD (colorectal) | ~0.74 |
-| LUAD (lung) | ~0.72 |
-| PRAD (prostate) | 0.65 ⚠️ weakest |
+| KIRC (kidney) | 0.86 |
+| BRCA (breast) | 0.75 |
+| COAD (colorectal) | 0.74 |
+| LUAD (lung) | 0.72 |
+| PRAD (prostate) | 0.65 |
 
-KIRC is the easiest to classify — its mutation profile (dominated by VHL and PBRM1) is highly distinctive. PRAD is the hardest — prostate cancer has a lower mutation burden and less distinctive gene signals.
+KIRC is the easiest to classify. Its mutation profile (dominated by VHL and PBRM1) is highly identifiable. PRAD is the hardest to classify. Prostate cancer has a lower mutation rate and less obvious gene signals.
 
 ---
 
-## Key biological findings (SHAP)
+## Biological findings (SHAP)
 
 SHAP values reveal which gene mutations drive each prediction — these align with known cancer biology:
 
@@ -135,7 +135,7 @@ SHAP values reveal which gene mutations drive each prediction — these align wi
 
 - 14 patients (2.9% of 487) were excluded because their mutation profiles fell entirely outside the selected gene set. This is expected and explainable: these patients had very few mutations, none overlapping the top-100 gene lists for any cancer type.
 - Feature selection used a per-cancer-type partitioned ranking rather than global mutation frequency. Global selection biases toward high tumour mutational burden (TMB) cancer types like COAD, underrepresenting low-TMB types like KIRC and PRAD.
-- Model trained locally due to SageMaker instance quota limitations on a new AWS account. Saved in SageMaker-compatible `.tar.gz` format for portability.
+- Model trained locally due to SageMaker instance service quota limitations on a new AWS account. Saved in SageMaker-compatible `.tar.gz` format for portability.
 
 ---
 
