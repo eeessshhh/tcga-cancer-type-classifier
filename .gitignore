@@ -1,0 +1,21 @@
+# Credentials — never commit these
+.env
+aws_credentials
+*.pem
+
+# Large data files — stay in S3
+*.csv
+*.parquet
+*.maf
+*.gz
+*.tar.gz
+
+# Python
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+venv/
+*.egg-info/
+
+# OS
+.DS_Store
