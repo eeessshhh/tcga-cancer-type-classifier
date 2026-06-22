@@ -1,0 +1,9 @@
+boto3>=1.26
+pandas>=1.5
+scikit-learn>=1.2
+xgboost>=1.7
+shap>=0.42
+matplotlib>=3.7
+seaborn>=0.12
+sagemaker>=2.150
+pyarrow>=11.0
